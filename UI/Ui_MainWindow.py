@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'C:\Documents and Settings\Null\My Documents\GitHub\UCLint\UI\MainWindow.ui'
 #
-# Created: Sun Jun 17 23:09:55 2012
+# Created: Mon Jun 18 10:14:28 2012
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -64,24 +64,24 @@ class Ui_MainWindow(object):
         self.statusBar.setObjectName(_fromUtf8("statusBar"))
         MainWindow.setStatusBar(self.statusBar)
         self.menuBar = QtGui.QMenuBar(MainWindow)
-        self.menuBar.setGeometry(QtCore.QRect(0, 0, 538, 21))
+        self.menuBar.setGeometry(QtCore.QRect(0, 0, 538, 20))
         self.menuBar.setObjectName(_fromUtf8("menuBar"))
         self.menu_File = QtGui.QMenu(self.menuBar)
         self.menu_File.setObjectName(_fromUtf8("menu_File"))
         self.menuHelp = QtGui.QMenu(self.menuBar)
         self.menuHelp.setObjectName(_fromUtf8("menuHelp"))
         MainWindow.setMenuBar(self.menuBar)
-        self.action_Quit = QtGui.QAction(MainWindow)
-        self.action_Quit.setObjectName(_fromUtf8("action_Quit"))
-        self.actionAbout = QtGui.QAction(MainWindow)
-        self.actionAbout.setObjectName(_fromUtf8("actionAbout"))
-        self.menu_File.addAction(self.action_Quit)
-        self.menuHelp.addAction(self.actionAbout)
+        self.actQuit = QtGui.QAction(MainWindow)
+        self.actQuit.setObjectName(_fromUtf8("actQuit"))
+        self.actAbout = QtGui.QAction(MainWindow)
+        self.actAbout.setObjectName(_fromUtf8("actAbout"))
+        self.menu_File.addAction(self.actQuit)
+        self.menuHelp.addAction(self.actAbout)
         self.menuBar.addAction(self.menu_File.menuAction())
         self.menuBar.addAction(self.menuHelp.menuAction())
 
         self.retranslateUi(MainWindow)
-        QtCore.QObject.connect(self.action_Quit, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.close)
+        QtCore.QObject.connect(self.actQuit, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.close)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -90,6 +90,7 @@ class Ui_MainWindow(object):
         self.dirLabel.setText(QtGui.QApplication.translate("MainWindow", "/", None, QtGui.QApplication.UnicodeUTF8))
         self.ucLintButton.setText(QtGui.QApplication.translate("MainWindow", "UCLint", None, QtGui.QApplication.UnicodeUTF8))
         self.saveButton.setText(QtGui.QApplication.translate("MainWindow", "Save", None, QtGui.QApplication.UnicodeUTF8))
+        self.commentscheckBox.setToolTip(QtGui.QApplication.translate("MainWindow", "If enabled it will delete all single line comments", None, QtGui.QApplication.UnicodeUTF8))
         self.commentscheckBox.setText(QtGui.QApplication.translate("MainWindow", "Delete Comments", None, QtGui.QApplication.UnicodeUTF8))
         self.previousButton.setToolTip(QtGui.QApplication.translate("MainWindow", "Previuos File", None, QtGui.QApplication.UnicodeUTF8))
         self.previousButton.setText(QtGui.QApplication.translate("MainWindow", "<", None, QtGui.QApplication.UnicodeUTF8))
@@ -97,9 +98,9 @@ class Ui_MainWindow(object):
         self.nextButton.setText(QtGui.QApplication.translate("MainWindow", ">", None, QtGui.QApplication.UnicodeUTF8))
         self.menu_File.setTitle(QtGui.QApplication.translate("MainWindow", "&File", None, QtGui.QApplication.UnicodeUTF8))
         self.menuHelp.setTitle(QtGui.QApplication.translate("MainWindow", "&Help", None, QtGui.QApplication.UnicodeUTF8))
-        self.action_Quit.setText(QtGui.QApplication.translate("MainWindow", "&Quit", None, QtGui.QApplication.UnicodeUTF8))
-        self.action_Quit.setShortcut(QtGui.QApplication.translate("MainWindow", "Ctrl+Q", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionAbout.setText(QtGui.QApplication.translate("MainWindow", "About", None, QtGui.QApplication.UnicodeUTF8))
+        self.actQuit.setText(QtGui.QApplication.translate("MainWindow", "&Quit", None, QtGui.QApplication.UnicodeUTF8))
+        self.actQuit.setShortcut(QtGui.QApplication.translate("MainWindow", "Ctrl+Q", None, QtGui.QApplication.UnicodeUTF8))
+        self.actAbout.setText(QtGui.QApplication.translate("MainWindow", "About", None, QtGui.QApplication.UnicodeUTF8))
 
 
 if __name__ == "__main__":
