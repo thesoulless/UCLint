@@ -29,11 +29,13 @@ class UCLint():
     def __init__(self):
         import  sys
         self.lastWasIf = False
+        self.lastWasElse = False
         self._level = 0
         self._outText = ''
         self.dir = ''
         self.isInComment = False
         self.file_names = []
+        self.file_full_names = []
         self.files = []
         self.file_index = -1
         
@@ -47,6 +49,7 @@ class UCLint():
         QObject.connect(self.ui.dirSelectButton, SIGNAL('clicked()'), self.on_dir_select_clicked)
         QObject.connect(self.ui.nextButton, SIGNAL('clicked()'), self.on_next_clicked)
         QObject.connect(self.ui.previousButton, SIGNAL('clicked()'), self.on_previous_clicked)
+        QObject.connect(self.ui.saveButton, SIGNAL('clicked()'), self.on_save_clicked)
         self.ui.actAbout.triggered.connect(self.about)
                 
         self.window.show()
@@ -107,11 +110,11 @@ class UCLint():
                         if (line == ''):
                             continue
                                         
-                matchs = re.search('^(/\*)(.*)', line, re.DOTALL)
+                matchs = re.search('^(/\*)(.*)', line) #, re.DOTALL
                 if matchs:
                     self.isInComment = True
                     
-                matchs = re.search('(.*)(\*/)$', line, re.DOTALL)
+                matchs = re.search('(.*)(\*/)$', line) #, re.DOTALL
                 if matchs:
                     self.isInComment = False
                     
@@ -121,7 +124,7 @@ class UCLint():
                     contents += line
                     continue
                 
-                matchs = re.search('^(//)', line, re.DOTALL)
+                matchs = re.search('^(//)', line) #, re.DOTALL
                 if matchs:
                     indent = self._level * '\t'
                     line = indent + line + '\n'
@@ -132,6 +135,9 @@ class UCLint():
                     if (line == '{'):
                         if (self.lastWasIf):
                             self.lastWasIf = False                            
+                            self._level -= 1
+                        if (self.lastWasElse):
+                            self.lastWasElse = False                            
                             self._level -= 1
                         indent = self._level * '\t'
                         line = indent + line + '\n'
@@ -144,7 +150,8 @@ class UCLint():
                     self._level += 1
                     continue
                 if ('}' in line):
-                    self._level -= 1
+                    if (not '*/' in line):
+                        self._level -= 1
                     if (not 'else' in line):                    
                         indent = self._level * '\t'
                         line = indent + line + '\n'
@@ -170,6 +177,20 @@ class UCLint():
                     line = indent + line + '\n'
                     contents += line
                     self._level -= 1
+                    continue
+                if (self.lastWasElse):
+                    self.lastWasElse = False
+                    indent = self._level * '\t'
+                    line = indent + line + '\n'
+                    contents += line
+                    self._level -= 1
+                    continue
+                if (line == "else"):
+                    self.lastWasElse = True
+                    indent = self._level * '\t'
+                    line = indent + line + '\n'
+                    contents += line
+                    self._level += 1
                     continue
                 indent = self._level * '\t'
                 line = indent + line + '\n'
@@ -221,7 +242,9 @@ class UCLint():
         os.chdir(str(self.dir))    
         for files in glob.glob("*.uc"):
             self.file_names.append(os.path.basename(files))
+            #self.file_full_names.append(os.path.basename(files))
             self.lastWasIf = False
+            self.lastWasElse = False
             self._level = 0
             self._outText = ''
             self.isInComment = False
@@ -266,6 +289,25 @@ class UCLint():
         self.ui.nextButton.setEnabled(True)
         self.ui.sourceTextEdit.setPlainText(self.files[self.file_index])
         self.ui.fileNamelabel.setText(self.file_names[self.file_index])
+        
+    def on_save_clicked(self):
+        import glob
+        import os
+        os.chdir(str(self.dir))
+        for fn in self.file_names:
+            index = 0
+            f = open(fn, 'w')
+            index = self.find_index(fn)
+            #print fn + "  " + str(index)
+            f.write(self.files[index]);
+            f.close()
+            
+    def find_index(self,  file):
+        index = -1
+        for i in range(0,  len(self.file_names)):
+            if (file == self.file_names[i]):
+                index = i
+        return index
         
     def about(self):
         	QMessageBox.about(self.window, "About",
